@@ -66,7 +66,7 @@
 <% if @sshd_threads != "" -%>
 	threads = <%= @sshd_threads %>
 <% end -%>
-[httpd]
+[apache]
 	listenUrl = proxy-https://*:8081/
 <% if @httpd_maxwait != "" -%>
 	maxWait = <%= @httpd_maxwait %>

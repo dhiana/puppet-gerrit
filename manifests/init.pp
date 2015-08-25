@@ -359,24 +359,24 @@ class gerrit(
   # - $replicate_path
   # - $contactstore
   # - $robots_txt_source
-  ::httpd::vhost { $vhost_name:
+  ::apache::vhost { $vhost_name:
     port     => 443,
     docroot  => 'MEANINGLESS ARGUMENT',
     priority => '50',
     template => 'gerrit/gerrit.vhost.erb',
     ssl      => true,
   }
-  httpd_mod { 'rewrite':
+  apache::mod { 'rewrite':
     ensure => present,
   }
-  httpd_mod { 'proxy':
+  apache::mod { 'proxy':
     ensure => present,
   }
-  httpd_mod { 'proxy_http':
+  apache::mod { 'proxy_http':
     ensure => present,
   }
-  if ! defined(Httpd_mod['cgi']) {
-    httpd_mod { 'cgi':
+  if ! defined(apache::mod['cgi']) {
+    apache::mod { 'cgi':
       ensure => present,
     }
   }
@@ -387,7 +387,7 @@ class gerrit(
       group   => 'root',
       mode    => '0640',
       content => $ssl_cert_file_contents,
-      before  => Httpd::Vhost[$vhost_name],
+      before  => apache::vhost[$vhost_name],
     }
   }
 
@@ -397,7 +397,7 @@ class gerrit(
       group   => 'ssl-cert',
       mode    => '0640',
       content => $ssl_key_file_contents,
-      before  => Httpd::Vhost[$vhost_name],
+      before  => apache::vhost[$vhost_name],
     }
   }
 
@@ -407,7 +407,7 @@ class gerrit(
       group   => 'root',
       mode    => '0640',
       content => $ssl_chain_file_contents,
-      before  => Httpd::Vhost[$vhost_name],
+      before  => apache::vhost[$vhost_name],
     }
   }
 
